@@ -1,3 +1,9 @@
+/*
+    Project: Aufgabe 11
+    Author: Mario Mottl 5BHEL
+    Date: 08.10.2020
+*/
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <sys/types.h>
@@ -10,6 +16,10 @@
 // returns the exitcode of the child process
 typedef int (*child_func_pointer_t)();
 
+/*
+Function : createfile()
+Description: creates requested file 
+*/
 void createfile()
 {
     int fd;
@@ -24,7 +34,10 @@ void createfile()
     close(fd);
 }
 
-///proc/cpuinfo
+/*
+Function : get_vendorid
+Description: gets vendor_id from /proc/cpuinfo
+*/
 void get_vendorid()
 {
     char buffer[50];
@@ -51,7 +64,11 @@ void get_vendorid()
     }
 }
 
-// returns -1 on error, child pid otherwise
+/*
+Function : fork_child_in_function()
+Description: returns -1 on error, child pid otherwise
+             prints pid and ppid
+*/
 pid_t fork_child_in_function(child_func_pointer_t child_func, const char* child_name)
 {
     pid_t child_pid = fork();
@@ -65,6 +82,11 @@ pid_t fork_child_in_function(child_func_pointer_t child_func, const char* child_
     return child_pid;
 }
 
+/*
+Function : wait_child()
+Description: waits for child process to die
+             checks if child died a natural death or terminated abnormally
+*/
 void wait_child(pid_t child_pid, const char* child_name)
 {
     int child_status;
@@ -82,7 +104,10 @@ void fork_and_wait_child(child_func_pointer_t child_func, const char* child_name
         wait_child(child_pid, child_name);
 }
 
-
+/*
+Function : grandchild1_func()
+Description: adds x premission to created file
+*/
 int grandchild1_func()
 {
     sleep(5);
@@ -90,6 +115,10 @@ int grandchild1_func()
     return 5;
 }
 
+/*
+Function : grandchild2_func()
+Description: lists the rights of requested file
+*/
 int grandchild2_func()
 {
     sleep(10);
@@ -98,6 +127,11 @@ int grandchild2_func()
     return 6;
 }
 
+/*
+Function : child_func()
+Description: creates the requested file,
+             furthermore creates two grandchildren
+*/
 int child_func()
 {
     createfile();
