@@ -12,6 +12,7 @@
 #include <fcntl.h>
 #include <string.h>
 #include <unistd.h>
+#include <errno.h>
 
 // returns the exitcode of the child process
 typedef int (*child_func_pointer_t)();
@@ -122,9 +123,55 @@ Description: lists the rights of requested file
 int grandchild2_func()
 {
     sleep(10);
-    //getfacl /tmp/f1
-    execl("/usr/bin/getfacl","getfacl" , "/tmp/f1",NULL);
-    return 6;
+    int rval;
+    //Check if file exists
+    rval = access("/tmp/f1",F_OK);
+    if(rval == 0)
+    {
+      printf("/tmp/f1 exists\r\n");
+    }
+    else
+    {
+      if(errno == ENOENT)
+      {
+        printf("/tmp/f1 does not exist\r\n");
+      }
+      else if (errno = EACCES)
+      {
+        printf("/tmp/f1 is not accessible\r\n");
+      }
+    }
+    //check read access
+    rval = access("/tmp/f1", R_OK);
+    if(rval == 0)
+    {
+      printf("/tmp/f1 is readable\r\n");
+    }
+    else
+    {
+      printf("/tmp/f1 is not readable (access denied)\r\n");
+    }
+    //check write access
+    rval = access("/tmp/f1", W_OK);
+    if(rval == 0)
+    {
+      printf("/tmp/f1 is writeable\r\n");
+    }
+    else
+    {
+      printf("/tmp/f1 is not writeable (access denied)\r\n");
+    }
+    //check execute access
+    rval = access("/tmp/f1", X_OK);
+    if(rval == 0)
+    {
+      printf("/tmp/f1 is executeable\r\n");
+    }
+    else
+    {
+      printf("/tmp/f1 is not executeable (access denied)\r\n");
+    }
+    return 0;
 }
 
 /*
@@ -145,7 +192,7 @@ int child_func()
     return 0;
 }
 
-int main(int argc,char **argv)
+int main(void)
 {
     int child_pid;
     get_vendorid();
