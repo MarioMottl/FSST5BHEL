@@ -46,8 +46,7 @@ void wait_child(pid_t child_pid, const char* child_name)
 void fork_and_wait_child(child_func_pointer_t child_func, const char* child_name)
 {
     pid_t child_pid = fork_child_in_function(child_func, child_name);
-    if (child_pid > 0)
-        wait_child(child_pid, child_name);
+    wait_child(child_pid, child_name);
 }
 
 /*
