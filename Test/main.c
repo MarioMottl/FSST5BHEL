@@ -14,7 +14,7 @@ typedef int (*child_func_pointer_t)();
 Paste child/grandchild functions calls here
 */
 
-pid_t fork_child_in_function(child_func_pointer_t child_func, const char* child_name)
+pid_t fork_child_in_function(child_func_pointer_t child_func, const char child_name[])
 {
     pid_t child_pid = fork();
     if (child_pid == 0)
@@ -27,7 +27,7 @@ pid_t fork_child_in_function(child_func_pointer_t child_func, const char* child_
     return child_pid;
 }
 
-void wait_child(pid_t child_pid, const char* child_name)
+void wait_child(pid_t child_pid, const char child_name[])
 {
     int child_status;
     waitpid(child_pid, &child_status, 0);
@@ -37,19 +37,19 @@ void wait_child(pid_t child_pid, const char* child_name)
         printf("%s has terminated abnormally\n", child_name);
 }
 
-void fork_and_wait_child(child_func_pointer_t child_func, const char* child_name)
+void fork_and_wait_child(child_func_pointer_t child_func, const char child_name[])
 {
     pid_t child_pid = fork_child_in_function(child_func, child_name);
     wait_child(child_pid, child_name);
 }
 
-void createfile(const char* filename)
+void createfile(const char filename[])
 {
     int fd = open(filename, O_CREAT);
     close(fd);
 }
 
-void writetofile(const char* filename, const char* message)
+void writetofile(const char filename[], const char message[])
 {
     int fd = open(filename, O_WRONLY);
     if((write(fd,message,strlen(message))) != -1)
@@ -63,7 +63,7 @@ void writetofile(const char* filename, const char* message)
     close(fd);
 }
 
-void readfromfile(const char* filename)
+void readfromfile(const char filename[])
 {
     int fd = open(filename,O_RDONLY);
     char buffer[2048];
