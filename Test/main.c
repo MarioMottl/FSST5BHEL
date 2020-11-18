@@ -10,10 +10,6 @@
 
 typedef int (*child_func_pointer_t)();
 
-/*
-Paste child/grandchild functions calls here
-*/
-
 pid_t fork_child_in_function(child_func_pointer_t child_func, const char child_name[])
 {
     pid_t child_pid = fork();
@@ -75,6 +71,10 @@ void readfromfile(const char filename[],char buffer[],size_t len)
         printf("Error couldnt read from file %s\n", filename);
     }
 }
+
+/*
+Paste child/grandchild functions calls here
+*/
 
 int main()
 {
