@@ -10,6 +10,10 @@
 
 typedef int (*child_func_pointer_t)();
 
+/*
+Paste child/grandchild functions calls here
+*/
+
 pid_t fork_child_in_function(child_func_pointer_t child_func, const char* child_name)
 {
     pid_t child_pid = fork();
