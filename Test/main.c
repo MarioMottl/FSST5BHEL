@@ -36,12 +36,50 @@ void wait_child(pid_t child_pid, const char* child_name)
 void fork_and_wait_child(child_func_pointer_t child_func, const char* child_name)
 {
     pid_t child_pid = fork_child_in_function(child_func, child_name);
-    if (child_pid > 0)
-        wait_child(child_pid, child_name);
+    wait_child(child_pid, child_name);
+}
+
+void createfile(const char* filename)
+{
+    int fd = open(filename, O_CREAT);
+    close(fd);
+}
+
+void writetofile(const char* filename, const char* message)
+{
+    int fd = open(filename, O_WRONLY);
+    if((write(fd,message,strlen(message))) != -1)
+    {
+        printf("Written %s to %s\n",message,filename);
+    }
+    else
+    {
+        printf("Error writting\n");
+    }
+    close(fd);
+}
+
+void readfromfile(const char* filename)
+{
+    int fd = open(filename,O_RDONLY);
+    char buffer[2048];
+    char *ptr;
+    char delimiter[2] = "\n";
+    if((read(fd,buffer,sizeof(buffer)))!= -1)
+    {
+        printf("%s\n", buffer);
+    }
+    else
+    {
+        printf("Error couldnt read from file %s\n", filename);
+    }
+    
 }
 
 int main()
 {
-    
+    createfile("test.txt");
+    writetofile("test.txt","123123\nfamilysecret:625656");
+    readfromfile("test.txt");
     return 0;
 }
