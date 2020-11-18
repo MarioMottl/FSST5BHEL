@@ -78,8 +78,5 @@ void readfromfile(const char* filename)
 
 int main()
 {
-    createfile("test.txt");
-    writetofile("test.txt","123123\nfamilysecret:625656");
-    readfromfile("test.txt");
     return 0;
 }
