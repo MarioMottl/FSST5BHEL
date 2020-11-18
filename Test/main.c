@@ -63,13 +63,10 @@ void writetofile(const char filename[], const char message[])
     close(fd);
 }
 
-void readfromfile(const char filename[])
+void readfromfile(const char filename[],char buffer[],size_t len)
 {
     int fd = open(filename,O_RDONLY);
-    char buffer[2048];
-    char *ptr;
-    char delimiter[2] = "\n";
-    if((read(fd,buffer,sizeof(buffer)))!= -1)
+    if((read(fd,buffer,len))!= -1)
     {
         printf("%s\n", buffer);
     }
@@ -77,7 +74,6 @@ void readfromfile(const char filename[])
     {
         printf("Error couldnt read from file %s\n", filename);
     }
-    
 }
 
 int main()
