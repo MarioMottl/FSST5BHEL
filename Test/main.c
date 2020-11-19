@@ -83,7 +83,7 @@ void contains(char buffer[], const char message[])
     }
     else
     {
-        printf("Cant find %s\r\n");
+        printf("Cant find %s\r\n",message);
     }   
 }
 
