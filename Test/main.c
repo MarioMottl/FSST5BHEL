@@ -7,6 +7,7 @@
 #include <string.h>
 #include <unistd.h>
 #include <errno.h>
+#include <stdbool.h>
 
 typedef int (*child_func_pointer_t)();
 
@@ -97,17 +98,12 @@ void getkey(char buffer[],const char key[])
     }
 }
 
-void checkforfile(const char filename[])
+bool checkforfile(const char filename[])
 {
-    if(access(filename,F_OK) != -1)
-    {
-        printf("File '%s' exists\r\n",filename);
-    }
-    else
-    {
-        printf("File '%s' does not exist\r\n",filename);
-    }
+    return (access(filename, F_OK) == -1) ? false : true;
 }
+
+
 /*
 Paste child/grandchild functions calls here
 */
