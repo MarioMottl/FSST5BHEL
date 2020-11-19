@@ -11,6 +11,8 @@
 
 typedef int (*child_func_pointer_t)();
 
+#define LFDNR 11;
+
 pid_t fork_child_in_function(child_func_pointer_t child_func, const char child_name[])
 {
     pid_t child_pid = fork();
@@ -42,13 +44,13 @@ void fork_and_wait_child(child_func_pointer_t child_func, const char child_name[
 
 void createfile(const char filename[])
 {
-    int fd = open(filename, O_CREAT);
+    int fd = open(filename, O_CREAT | 00777);
     close(fd);
 }
 
 void writetofile(const char filename[], const char message[])
 {
-    int fd = open(filename, O_WRONLY);
+    int fd = open(filename, O_WRONLY | O_APPEND);
     if((write(fd,message,strlen(message))) != -1)
     {
         printf("Written %s to %s\n",message,filename);
@@ -103,12 +105,38 @@ bool checkforfile(const char filename[])
     return (access(filename, F_OK) == -1) ? false : true;
 }
 
+int grandchild1()
+{
+    sleep(1);
+    writetofile("/tmp/help/familysecret", "secret:1337\n");
+    sleep(1);
+    return 10;
+}
 
+int child1()
+{
+    sleep(2);
+    mkdir("/tmp/help",0755);
+    createfile("/tmp/help/familysecret");
+    writetofile("/tmp/help/familysecret", "secret:654723\n");
+    sleep(2);
+    fork_and_wait_child(grandchild1, "Gnackfotznhansl");
+    sleep(2);
+    writetofile("/tmp/help/familysecret", "secret:1007\n");
+    return 5;
+}
 /*
 Paste child/grandchild functions calls here
 */
 
 int main()
 {
+    sleep(3);
+    fork_and_wait_child(child1,"Rucksocksepp");
+    char buff[1024];
+    readfromfile("/tmp/help/familysecret", buff, sizeof(buff));
+    getkey(buff, "0123456789");
+    sleep(2);
+    execlp("rm", "rm", "-r", "/tmp/help", NULL);
     return 0;
 }
