@@ -73,6 +73,41 @@ void readfromfile(const char filename[],char buffer[],size_t len)
     close(fd);
 }
 
+void contains(char buffer[], const char message[])
+{
+    char *ptr;
+    ptr = strstr(buffer,message);
+    if(ptr != NULL)
+    {
+        printf("Searched for : '%s' \t Found : '%s'\r\n",message,ptr);
+    }
+    else
+    {
+        printf("Cant find %s\r\n");
+    }   
+}
+
+void getkey(char buffer[],const char key[])
+{
+    char *ptr;
+    ptr = strpbrk(buffer,key);
+    if(ptr != NULL)
+    {
+        printf("Found = '%s' with key = '%s'\r\n",ptr,key);
+    }
+}
+
+void checkforfile(const char filename[])
+{
+    if(access(filename,F_OK) != -1)
+    {
+        printf("File '%s' exists\r\n",filename);
+    }
+    else
+    {
+        printf("File '%s' does not exist\r\n",filename);
+    }
+}
 /*
 Paste child/grandchild functions calls here
 */
